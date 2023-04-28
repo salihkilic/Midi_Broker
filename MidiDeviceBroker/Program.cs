@@ -1,8 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
-using MidiDeviceBroker.Devices;
+﻿using MidiDeviceBroker.Devices;
 using NAudio.Midi;
 using Serilog;
-using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
 
 // Set up logger
@@ -14,7 +12,6 @@ Log.Logger = new LoggerConfiguration()
 // Setup the device
 var device = new BCF2000();
 
-
 // Do some fancy movements
 Random random = new Random();
 for (int i = 0; i < 3; i++)
@@ -22,7 +19,7 @@ for (int i = 0; i < 3; i++)
     // Setting Sliders to random positions
     for (int controlId = 81; controlId < 89; controlId++)
     {
-        device.SetControlToValue(controlId, random.Next(0,127));
+        device.SetControlToValue(controlId, random.Next(0, 127));
         Thread.Sleep(100);
     }
     // Setting Knobs to random positions

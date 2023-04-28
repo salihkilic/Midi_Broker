@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NAudio.Midi;
+﻿using NAudio.Midi;
 
 namespace MidiDeviceBroker.Devices
 {
-    internal class BCF2000: BaseDevice, IDevice
+    internal class BCF2000 : BaseDevice, IDevice
     {
-        public BCF2000() : base("BCF2000", "Behringer BCF2000") {
+        public BCF2000() : base("BCF2000", "Behringer BCF2000")
+        {
             // Register our functions to the events
             HandleControlChangeEvent += OnControlChange;
         }
