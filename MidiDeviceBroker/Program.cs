@@ -10,41 +10,52 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 
 // Setup the device
-var device = new BCF2000();
+var device = new Device();
 
-// Do some fancy movements
-Random random = new Random();
-for (int i = 0; i < 3; i++)
+// Ask the user what we're going to do
+Console.WriteLine($"What do you want to do? {Environment.NewLine} " +
+    $"1. Do some fancy movements for testing {Environment.NewLine}");
+
+if (int.TryParse(Console.ReadLine(), out int x))
 {
-    // Setting Sliders to random positions
-    for (int controlId = 81; controlId < 89; controlId++)
+    switch (x)
     {
-        device.SetControlToValue(controlId, random.Next(0, 127));
+        case 1:
+            FancyMovements(device);
+            break;
+        default:
+            break;
+    }
+}
+else
+{
+    Console.WriteLine("Input not recognised, exiting program...");
+}
+
+void FancyMovements(IDevice device) {
+    // Do some fancy movements
+    Random random = new Random();
+    for (int i = 0; i < 200; i++)
+    {
+        // Set a slider
+        var randomValueFader = random.Next(0, 128);
+        var randomFader = device.Controls.Faders[random.Next(device.Controls.Faders.Count)];
+        device.SetControlToValue(randomFader, randomValueFader);
+
+        // Set a button
+        var randomValueButton = random.Next(2);
+        if (randomValueButton == 1) randomValueButton = 127;
+        var randomButton = device.Controls.Buttons[random.Next(device.Controls.Buttons.Count)];
+        device.SetControlToValue(randomButton, randomValueButton);
+        // Give the device a little time to actually do this
         Thread.Sleep(100);
     }
-    // Setting Knobs to random positions
-    for (int controlId = 1; controlId < 9; controlId++)
-    {
-        device.SetControlToValue(controlId, random.Next(0, 127));
-        Thread.Sleep(10);
-    }
-}
-// Resetting Sliders to half position
-for (int controlId = 81; controlId < 89; controlId++)
-{
-    device.SetControlToValue(controlId, 64);
-    Thread.Sleep(100);
-}
-// Resetting Knobs to half position
-for (int controlId = 1; controlId < 9; controlId++)
-{
-    device.SetControlToValue(controlId, 1);
-    Thread.Sleep(100);
-}
 
-for (int device1 = 0; device1 < MidiOut.NumberOfDevices; device1++)
-{
-    Console.WriteLine(MidiOut.DeviceInfo(device1).ProductName);
+    // Reset all the faders to 0
+    foreach (var fader in device.Controls.Faders) device.SetControlToValue(fader, 0);
+
+    // Reset all the buttons to off
+    foreach (var button in device.Controls.Buttons) device.SetControlToValue(button, 0);
 }
 
 // Wait for user to be done

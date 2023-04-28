@@ -1,4 +1,4 @@
-﻿namespace MidiDeviceBroker.Devices.ControlTypes
+﻿namespace MidiDeviceBroker.Devices.Controllers
 {
     internal interface IDeviceFader : IDeviceControl
     {
