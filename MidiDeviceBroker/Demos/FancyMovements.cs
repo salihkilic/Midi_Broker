@@ -13,7 +13,7 @@ namespace MidiDeviceBroker.Demos
         {
             // Do some fancy movements
             Random random = new Random();
-            for (int i = 0; i < 200; i++)
+            for (int i = 0; i < 100; i++)
             {
                 // Set a slider
                 var randomValueFader = random.Next(0, 128);
@@ -26,10 +26,12 @@ namespace MidiDeviceBroker.Demos
                 var randomButton = device.Controls.Buttons[random.Next(device.Controls.Buttons.Count)];
                 device.SetControlToValue(randomButton, randomValueButton);
                 // Give the device a little time to actually do this
-                Thread.Sleep(100);
+                Thread.Sleep(30);
             }
 
-            // Reset all the faders to 0
+            // Reset all the faders to 100 and then 0
+            foreach (var fader in device.Controls.Faders) device.SetControlToValue(fader, 127);
+            Thread.Sleep(300);
             foreach (var fader in device.Controls.Faders) device.SetControlToValue(fader, 0);
 
             // Reset all the buttons to off

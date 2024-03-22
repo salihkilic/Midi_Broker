@@ -47,9 +47,12 @@ namespace MidiDeviceBroker.Devices
             DeviceID = id;
             DeviceName = name;
             FindDevices();
-            DeviceIn.MessageReceived += OnMsg;
-            DeviceIn.ErrorReceived += OnError;
-            DeviceIn.Start();
+            if (DeviceIn != null)
+            {
+                DeviceIn.MessageReceived += OnMsg;
+                DeviceIn.ErrorReceived += OnError;
+                DeviceIn.Start();
+            }
         }
 
         private void FindDevices()
@@ -76,10 +79,8 @@ namespace MidiDeviceBroker.Devices
 
         private void OnMsg(object sender, MidiInMessageEventArgs e)
         {
-            Log.Debug(
-                $"-- MSG RECEIVED --{Environment.NewLine}" +
-                $"      Event Type: {e.MidiEvent.CommandCode}{Environment.NewLine}" +
-                $"      Event: {e.MidiEvent}");
+            Log.Debug($"Event Received: {e.MidiEvent.CommandCode}{Environment.NewLine}" +
+                      $"Event: {e.MidiEvent}");
 
             // We need to check the type of event because some have to be explicity cast
             // before we can use their relevant variables.

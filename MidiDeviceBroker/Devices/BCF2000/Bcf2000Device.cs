@@ -5,11 +5,11 @@ using NAudio.Midi;
 
 namespace MidiDeviceBroker.Devices
 {
-    internal class Device : BaseDevice, IDevice
+    internal class Bcf2000Device : BaseDevice, IDevice
     {
         public IControlCollection Controls {get; private set;}
 
-        public Device() : base("BCF2000", "Behringer BCF2000")
+        public Bcf2000Device() : base("BCF2000", "Behringer BCF2000")
         {
             Controls = new ControlCollection();
             // Register our functions to the events
@@ -17,8 +17,6 @@ namespace MidiDeviceBroker.Devices
         }
         public void OnControlChange(object? sender, ControlChangeEvent e)
         {
-            Console.WriteLine(
-                $"Control change -- Controller ID: {e.Controller} -- Controller Value {e.ControllerValue} -- Channel: {e.Channel}");
         }
 
         public void SetControlToValue(int controlId, int value)
